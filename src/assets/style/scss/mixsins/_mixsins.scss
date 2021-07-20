@@ -1,0 +1,33 @@
+@mixin table {
+    @media (max-width: 1170px) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media (max-width: 767px) {
+        @content;
+    }
+}
+
+@mixin button($color: green) {
+	position: relative;
+	display: inline-block;
+	padding: 3px;
+	min-width: 24px;
+	height: 24px;
+	text-align: center;
+	color: rgba(0,0,0,0.7);
+
+	& > span {
+		font-size: 20px;
+	}
+
+	&:hover {
+		background: #eee;
+	}
+
+	&:active {
+		color: $color;
+	}
+}

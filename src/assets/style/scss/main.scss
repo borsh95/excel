@@ -1,0 +1,48 @@
+@import "~normalize.css";
+@import "fonts";
+@import "./base/variables";
+@import "./mixsins/mixsins";
+@import "./base/nullstyle";
+@import "./base/settings";
+
+html,
+body {
+    font-family: var(--font-family);
+	background-color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000;
+}
+
+/*--------------------------------Common--------------------------------*/
+@import "./components/header";
+@import "./components/toolbar";
+@import "./components/formula";
+@import "./components/table";
+@import "./components/dashboard";
+
+/*--------------------------------Other--------------------------------*/
+.excel {
+	position: relative;
+	height: 100%;
+	max-width: 100%;
+	font-size: 0.8rem;
+	color: #888;
+}
+
+.removeExcel {
+	position: fixed;
+	bottom: 50px;
+	right: 20px;
+	background: green;
+	padding: 1rem;
+	border-radius: 6px;
+	color: white;
+	font-weight: 700;
+
+	&.disabled {
+		cursor: no-drop;
+		opacity: 0.6;
+	}
+}
+
