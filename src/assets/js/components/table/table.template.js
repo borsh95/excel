@@ -1,12 +1,18 @@
 const CODES = {
 	A: 65,
 	Z: 90
-}
+};
 
-function createCell() {
-	return `
-		<div class="cell" contenteditable></div>
-	`;
+function createrCell(row) {
+	return function (_, col) {
+		return `
+	 		<div class="cell" 
+				data-col="${col}" 
+				data-id="${row}:${col}" 
+				contenteditable>
+			</div>
+		`;
+	};
 }
 
 function createCol(content) {
@@ -29,7 +35,7 @@ function createRow(content, index) {
 			<div class="row__data">${content}</div>
 		</div>
 	`;
-}
+};
 
 function toChar(_, index) {
 	return String.fromCharCode(CODES.A + index);
@@ -49,7 +55,7 @@ export function createTable(rowsCount = 15) {
 	for (let i = 0; i < colsCount; i++) {
 		const cells = new Array(colsCount)
 			.fill('')
-			.map(createCell)
+			.map(createrCell(i))
 			.join('');
 
 		rows.push(createRow(cells, i));

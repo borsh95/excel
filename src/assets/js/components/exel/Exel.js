@@ -1,22 +1,28 @@
-import {$} from './../../../../core/Dom';
+import { Emitter } from '../../../../core/Emitter';
+import { $ } from './../../../../core/Dom';
 
 export class Exel {
 	constructor(selector, options) {
 		this.$el = $(selector);
 		this.components = options.components || [];
+		this.emitter = new Emitter();
 	}
 
 	getRoot() {
 		const $root = $.create('div', 'excel');
 
-			this.components = this.components.map((Component) => {
-				const $el = $.create('div', Component.className);
-				const component = new Component($el);
-				$el.html(component.toHTML());
-				$root.append($el);
+		const componentOptions = {
+			emitter: this.emitter,
+		};
 
-				return component;
-			});
+		this.components = this.components.map((Component) => {
+			const $el = $.create('div', Component.className);
+			const component = new Component($el, componentOptions);
+			$el.html(component.toHTML());
+			$root.append($el);
+
+			return component;
+		});
 
 		return $root;
 	}
@@ -27,5 +33,9 @@ export class Exel {
 		for (const componet of this.components) {
 			componet.init();
 		}
+	}
+
+	destroy() {
+		this.components.forEach((component) => component.destroy());
 	}
 }

@@ -1,7 +1,7 @@
 import {capitalize} from "./utils";
 
 export class DomListener {
-	constructor($root, listeners  = []) {
+	constructor($root, listeners = []) {
 		if (!$root) {
 			throw new Error('No $root provided for DomListener');
 		}
