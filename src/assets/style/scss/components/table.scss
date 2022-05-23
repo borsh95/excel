@@ -36,7 +36,9 @@
 		border: 1px solid var(--border-color);
 		border-left: none;
 		border-top: none;
+		user-select: none;
 	}
+
 	.col-resize,
 	.row-resize {
 		position: absolute;
@@ -46,19 +48,48 @@
 		opacity: 0;
 		background-color: #3c74ff;
 
+		&::before {
+			content: "";
+			position: absolute;
+			display: block;
+			pointer-events: none;
+			background-color: inherit;
+		}
+
 		&:hover {
 			cursor: col-resize;
 			opacity: 1 !important;
 		}
 	}
+
 	.col-resize {
 		top: 0;
 		width: 4px;
+
+		&::before {
+			top: 0;
+			left: 50%;
+			width: 1px;
+			height: 100vh;
+			transform: translateX(-50%);
+		}
 	}
 
 	.row-resize {
 		left: 0;
 		height: 4px;
+
+		&::before {
+			left: 0;
+			top: 50%;
+			width: 100vw;
+			height: 1px;
+			transform: translateY(-50%);
+		}
+
+		&:hover {
+			cursor: row-resize;
+		}
 	}
 
 	.cell {

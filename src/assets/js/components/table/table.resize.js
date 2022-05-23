@@ -1,53 +1,43 @@
-import { $ } from '@core/Dom';
+import { $ } from "../../../../core/dom";
 
-export function resizeHandler(e) {
+export function resizeHandler($root, ev) {
+	const $resizer = $(ev.target);
+	const $parent = $resizer.closest('[data-type="resizable"]');
+	const coords = $parent.getCoords();
+	const type = $resizer.data.resize;
+	let delta, value;
+	$resizer.css({opacity: 1});
 
-	const resizable = $(e.target);
-	const parent = resizable.closest('[data-type="resizable"]');
-	const coords = parent.getCoords();
-	const index = parent.index();
-	const type = resizable.data.resize;
-	let value;
-
-	resizable.css({
-		opacity: 1,
-		//bottom: `-5000px`
-	});
-
-	window.onmousemove = function (e) {
-		if (type === 'col') {
-			const delta = e.pageX - coords.right + 2;
-			value = coords.width + delta;
-			resizable.css({
-				transform: `translateX(${delta}px)`,
-			});
-		} else if (type === 'row') {
-			const delta = e.pageY - coords.bottom + 2;
-			resizable.css({
-				transform: `translateY(${delta}px)`,
-			});
+	document.onmousemove = (e) => {
+		if (type === "col") {
+			delta = e.clientX - coords.right;
+			$resizer.css({transform: `translateX(${delta}px)`})
+		} else {
+			delta = e.clientY - coords.bottom;
+			$resizer.css({transform: `translateY(${delta}px)`})
 		}
 	};
 
-	window.onmouseup = function (e) {
-		if (type === 'col') {
-			const resiseEls = [...document.querySelectorAll('.row__data')]
-				.map((row) => row.children[index]);
+	document.onmouseup = (e) => {
+		document.onmousemove = document.onmouseup = null;
 
-			resiseEls.map((item) => {
-				item.style.width = `${value}px`;
+		$resizer.css({opacity: "", transform: ""});
+
+		if (type === "col") {
+			const cells = $root.findAll(`[data-cell="${$parent.data.col}"]`);
+			value = coords.width + delta + "px";
+
+			[...[$parent], ...cells].forEach(item => {
+				item.css({
+					width: value
+				})
 			});
-		} else if (type === 'row') {
-			parent.css({
-				'height': coords.height + (e.pageY - coords.bottom) + 'px',
+		} else {
+			value = coords.height + delta + "px";
+
+			$parent.css({
+				height: value
 			});
 		}
-
-		window.onmousemove = window.onmouseup = null;
-		resizable.css({
-			bottom: '',
-			opacity: '',
-			transform: '',
-		});
 	};
 }

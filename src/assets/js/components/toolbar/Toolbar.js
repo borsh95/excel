@@ -1,44 +1,40 @@
-import { ExelComponent } from "@core/ExelComponent";
+import { ExcelComponent } from "../../../../core/ExcelComponent";
 
-export class Toolbar extends ExelComponent {
-	static className = "excel__toolbar";
-	constructor($root, options) {
+export class Toolbar extends ExcelComponent {
+	static className = 'excel__toolbar';
+
+	constructor($root) {
 		super($root, {
-			name: 'Toolbar',
-			listeners: ['click'],
-			...options,
+			name: 'Formula',
+			listeners: ['input', 'click'],
 		});
 	}
 
 	toHTML() {
 		return `
-			 <button>
-        <span class="material-icons">format_align_left</span>
-      </button>
+			<button>
+				<span class="material-icons">format_align_left</span>
+			</button>
 
-      <button>
-        <span class="material-icons">format_align_center</span>
-      </button>
+			<button>
+				<span class="material-icons">format_align_center</span>
+			</button>
 
-      <button>
-        <span class="material-icons">format_align_right</span>
-      </button>
+			<button>
+				<span class="material-icons">format_align_right</span>
+			</button>
 
-      <button>
-        <span class="material-icons">format_bold</span>
-      </button>
+			<button>
+				<span class="material-icons">format_bold</span>
+			</button>
 
-      <button>
-        <span class="material-icons">format_italic</span>
-      </button>
+			<button>
+				<span class="material-icons">format_italic</span>
+			</button>
 
-      <button>
-        <span class="material-icons">format_underlined</span>
-      </button>
+			<button>
+				<span class="material-icons">format_underlined</span>
+			</button>
 		`;
-	}
-
-	onClick(e) {
-		console.log(e.target);
 	}
 }

@@ -1,25 +1,27 @@
-import { ExelComponent } from "@core/ExelComponent";
+import { ExcelComponent } from "../../../../core/ExcelComponent";
 
-export class Header extends ExelComponent {
+export class Header extends ExcelComponent {
 	static className = 'excel__header';
-	constructor($root, options) {
+
+	constructor($root) {
 		super($root, {
-			name: 'Header',
-			...options
+			name: 'Formula',
+			listeners: ['input', 'click'],
 		});
 	}
 
 	toHTML() {
 		return `
-		<input type="text" class="input" value="Новая таблица" />
-		<div>
-			<button>
-			<span class="material-icons">delete</span>
-			</button>
-			<button>
-			<span class="material-icons">exit_to_app</span>
-			</button>
-		</div>
-	`;
+			<input type="text" class="input" value="Новая таблица" />
+
+			<div>
+				<button class="button">
+					<i class="material-icons">delete</i>
+				</button>
+				<button class="button">
+					<i class="material-icons">exit_to_app</i>
+				</button>
+			</div>
+		`;
 	}
 }

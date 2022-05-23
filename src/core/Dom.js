@@ -1,7 +1,52 @@
 class Dom {
-	constructor(el) {
-		this.$el = typeof el === 'string' ? document.querySelector(el)
-			: el;
+	constructor(selector) {
+		this.$el = typeof selector === "string"
+			? document.querySelector(selector)
+			: selector;
+	}
+
+	findAll(selector) {
+		return [...this.$el.querySelectorAll(selector)].map(item => $(item));
+	}
+
+	closest(selector) {
+		return $(this.$el.closest(selector));
+	}
+
+	css(styles = {}) {
+		Object.assign(this.$el.style, styles);
+
+		return this.$el;
+	}
+
+	getCoords() {
+		return this.$el.getBoundingClientRect();
+	}
+
+	get data() {
+		return this.$el.dataset;
+	}
+
+	on(eventType, callback) {
+		this.$el.addEventListener(eventType, callback);
+	}
+
+	off(eventType, callback) {
+		this.$el.removeEventListener(eventType, callback);
+	}
+
+	append(node) {
+		if (node instanceof Dom) {
+			this.$el.append(node.$el);
+		} else {
+			if (Element.prototype.append) {
+				this.$el.append(node);
+			} else {
+				this.$el.appendChild(node);
+			}
+		}
+
+		return this;
 	}
 
 	html(html) {
@@ -13,100 +58,9 @@ class Dom {
 		return this.$el.outerHTML.trim();
 	}
 
-	text(text) {
-		if (typeof text === 'string') {
-			this.$el.textContent = text;
-			return this;
-		}
-
-		if (this.$el.tagName.toLowerCase() === 'input') {
-			return this.$el.value.trim();
-		}
-
-		return this.$el.textContent.trim();
-	}
-
 	clear() {
-		this.html('');
+		this.$el.innerHTML = '';
 		return this;
-	}
-
-	append(node) {
-		node = node instanceof Dom ? node.$el : node;
-
-		if (Element.prototype.append) {
-			this.$el.append(node);
-		} else {
-			this.$el.appendChild(node);
-		}
-
-		return this;
-	}
-
-	closest(selector) {
-		return $(this.$el.closest(selector));
-	}
-
-	index() {
-		const parent = this.$el.parentElement;
-
-		return [...parent.children].indexOf(this.$el);
-	}
-
-	get data() {
-		return this.$el.dataset;
-	}
-
-	get hasElement() {
-		return !!this.$el;
-	}
-
-	focus() {
-		this.$el.focus();
-	}
-
-	id(parse) {
-		if (parse) {
-			const parsed = this.id().split(':');
-
-			return {
-				row: +parsed[0],
-				col: +parsed[1]
-			};
-		}
-		return this.data.id;
-	}
-
-	find(selector) {
-		return $(this.$el.querySelector(selector));
-	}
-
-	findAll(selector) {
-		return this.$el.querySelectorAll(selector);
-	}
-
-	getCoords() {
-		return this.$el.getBoundingClientRect();
-	}
-
-	css(styles = {}) {
-		Object.assign(this.$el.style, styles);
-	}
-
-	addClass(string) {
-		this.$el.classList.add(string);
-	}
-
-	removeClass(string) {
-		this.$el.classList.remove(string);
-	}
-
-	on(eventType, callback) {
-		this.$el.addEventListener(eventType, callback);
-	}
-
-	off(eventType, callback) {
-		this.$el.removeEventListener(eventType, callback);
 	}
 }
 
@@ -114,10 +68,10 @@ export function $(selector) {
 	return new Dom(selector);
 }
 
-$.create = function (tagName, className = '') {
+$.create = (tagName, classes = '') => {
 	const el = document.createElement(tagName);
-
-	if (className) el.classList.add(className);
-
+	if (classes) {
+		el.className = classes;
+	}
 	return $(el);
 }
